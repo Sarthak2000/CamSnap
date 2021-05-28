@@ -26,16 +26,16 @@ let RecordingState=false;
     recordbtn.addEventListener("click",function(e){
         if(!RecordingState){
             mediaRecorder.start();
-            recordbtn.innerHTML="recording";
+            document.querySelector(".record-video-control").classList.add("record-animation");
         }else{
             mediaRecorder.stop();
-            recordbtn.innerHTML="record";
+            document.querySelector(".record-video-control").classList.remove("record-animation");
         }
         RecordingState=!RecordingState;
     })
     capturebtn.addEventListener("click",captureimage)
 
-})()
+})();
 function downloadVideo(){
     let vidurl=URL.createObjectURL(RecordedMedia); //converts blob object to URL
     console.log("downloading");
@@ -48,6 +48,10 @@ function downloadVideo(){
   //  a.remove();     // remove after download => it will automatically remove after function terminates
 }
 function captureimage(e){
+    document.querySelector(".capture-photo-control").classList.add("capture-pic");
+    setTimeout(() => {
+        document.querySelector(".capture-photo-control").classList.remove("capture-pic");
+    }, 1000);
     //create a canvas
     let canvas=document.createElement("canvas");
     //set height and width of canvas same as that of our video
@@ -55,6 +59,12 @@ function captureimage(e){
     canvas.width=VideoPlayer.videoWidth;
     //draw image on canvas
     let ctx=canvas.getContext("2d");
+    // if current zoom is changed then scale the canvas
+    if(curzoom!=1){
+        ctx.translate(canvas.width/2,canvas.height/2);
+        ctx.scale(curzoom,curzoom);
+        ctx.translate(-canvas.width/2,-canvas.height/2);
+    }
     ctx.drawImage(VideoPlayer,0,0);
 
     //download image using dynamic url
@@ -66,3 +76,30 @@ function captureimage(e){
 
     atag.click();
 }
+
+//zoom in out
+let zooomin=document.querySelector(".scaleup");
+let zooomout=document.querySelector(".scaledown");
+let invert=document.querySelector(".invert");
+let minzoom=0.8;
+let maxzoom=2;
+let curzoom=1;
+zooomin.addEventListener("click",function(e){
+    if(zooomin.getAttribute("inverted")=="true"){
+    }
+    if(curzoom<maxzoom && curzoom>=0){ // " >=0 "  to handle the inverted case
+        curzoom+=0.1;   // idhar to a ka scope chalke kahatam hojana chahie???????????????????
+        VideoPlayer.style.transform=`scale(${curzoom})`;
+    }
+})
+zooomout.addEventListener("click",function(e){
+    if(curzoom>minzoom && curzoom>=0){
+        curzoom-=0.1;
+        VideoPlayer.style.transform=`scale(${curzoom})`;
+    }
+})
+invert.addEventListener("click",function(e){
+        curzoom=-(curzoom);
+        VideoPlayer.style.transform=`scale(${curzoom})`;
+
+})
