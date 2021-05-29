@@ -76,7 +76,7 @@ function captureimage(e){
 
     atag.click();
 }
-
+// ============ zoom functionality ================
 //zoom in out
 let zooomin=document.querySelector(".scaleup");
 let zooomout=document.querySelector(".scaledown");
@@ -88,7 +88,7 @@ zooomin.addEventListener("click",function(e){
     if(zooomin.getAttribute("inverted")=="true"){
     }
     if(curzoom<maxzoom && curzoom>=0){ // " >=0 "  to handle the inverted case
-        curzoom+=0.1;   // idhar to a ka scope chalke kahatam hojana chahie???????????????????
+        curzoom+=0.1;   
         VideoPlayer.style.transform=`scale(${curzoom})`;
     }
 })

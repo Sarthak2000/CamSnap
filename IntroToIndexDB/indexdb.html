@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <input id="dname" placeholder="Database Name" type="text">
+    <input id="dversion" placeholder="version Name" type="text">
+    <button id="bid">Save Database</button>
+    <br>
+    <input id="mid" type="Media-Id" placeholder="enter media id" type ="text">
+    <input id="mtype" type="text" placeholder="Media-type">
+    <button id="mediabtn">Add Media</button>
+    <br>
+    <button id="display">Show Media</button>
+</body>
+<script>
+
+    let db;
+    
+    //1.Open / Create Database
+
+    let bid = document.querySelector("#bid");
+    let dname = document.querySelector("#dname");
+    let dver = document.querySelector("#dversion");
+    bid.addEventListener("click", openDB);
+    function openDB(e) {
+        let dbReq = indexedDB.open(dname.value, dver.value); // gets me the db request
+        console.log(dbReq);     // I am getting my db here also ???
+
+        dbReq.onsuccess=function (e) {
+            alert("sucess event!!!");
+        }
+        
+        dbReq.onupgradeneeded=function (e) {
+            alert("onupgrade !!!");
+            db=e.target.result;
+            // Now Create MediaTable
+            let MediaTable=db.createObjectStore("Media",{keyPath:"mid"});
+        }
+        dbReq.onerror=function(e){
+            console.log("ERROR!! : ",e.target.message);
+        }
+
+        //2. Add Media Queries/ Values
+
+        let medid=document.querySelector("#mid");
+        let medtype=document.querySelector("#mtype");
+        let btn=document.querySelector("#mediabtn");
+
+        btn.addEventListener("click",function(e){
+            let mid=medid.value;
+            let mtype=medtype.value;
+            
+            // Create a transaction=>  open a read/write db transaction, ready for adding the data
+            let txn=db.transaction("Media","readwrite"); //=> "Media" is table name!
+            
+            // get the media transaction object onto which values wd be added
+            let mediaStore = txn.objectStore("Media"); 
+            
+            mediaStore.add({mid:mid , type:mtype});
+
+            txn.onerror = function(e){
+                console.log("txn failed !!");
+                console.log(e);
+            }
+        })
+
+        // 3. Display Media
+        let smbtn=document.querySelector("#display");
+
+        smbtn.addEventListener("click",(e)=>{
+            // Create a transaction=>  open a readonly transaction
+            let txn=db.transaction("Media","readonly");
+            
+            // get the media transaction object onto which values wd be added
+            let mediaStore = txn.objectStore("Media"); 
+
+            let cursorObject=mediaStore.openCursor(); // get cursor pointer object
+
+            cursorObject.onsuccess=function(e){
+                let cursor=cursorObject.result;
+
+                if(cursor){
+                    console.log(cursor.value);
+                    cursor.continue(); // moves to next element in cursorobject
+                }
+            }
+
+            
+        })
+    }
+</script>
+
+</html>
