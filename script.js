@@ -38,20 +38,29 @@ let RecordingState=false;
 })();
 function downloadVideo(){
     let vidurl=URL.createObjectURL(RecordedMedia); //converts blob object to URL
-    console.log("downloading");
-    console.log(vidurl);
-    let a=document.createElement("a");      // can only download on a tags therefore create an a tag
-    a.href=vidurl;          // add url to its href
-    a.download="video.mp4"; // set name of file
+    
+    let sv=setInterval(function(){
+        if(db){
+            clearInterval(sv);
+            SaveMedia(vidurl,"video");
+        }
+    },100);
 
-    a.click();      // should get clicked to download
+    // let a=document.createElement("a");      // can only download on a tags therefore create an a tag
+    // a.href=vidurl;          // add url to its href
+    // a.download="video.mp4"; // set name of file
+
+    // a.click();      // should get clicked to download
   //  a.remove();     // remove after download => it will automatically remove after function terminates
 }
 function captureimage(e){
     document.querySelector(".capture-photo-control").classList.add("capture-pic");
+    
+    // add to indexDb
     setTimeout(() => {
         document.querySelector(".capture-photo-control").classList.remove("capture-pic");
     }, 1000);
+
     //create a canvas
     let canvas=document.createElement("canvas");
     //set height and width of canvas same as that of our video
@@ -66,15 +75,22 @@ function captureimage(e){
         ctx.translate(-canvas.width/2,-canvas.height/2);
     }
     ctx.drawImage(VideoPlayer,0,0);
-
-    //download image using dynamic url
+    
     let imageURL=canvas.toDataURL("image/jpg"); //=> converts canvas to URL
+    
+    let sv=setInterval(function(){
+        if(db){
+            clearInterval(sv);
+            SaveMedia(imageURL,"image");
+        }
+    },100);
+    // //download image using dynamic url
 
-    let atag=document.createElement("a");
-    atag.href=imageURL;
-    atag.download="image.jpg";
+    // let atag=document.createElement("a");
+    // atag.href=imageURL;
+    // atag.download="image.jpg";
 
-    atag.click();
+    // atag.click();
 }
 // ============ zoom functionality ================
 //zoom in out
