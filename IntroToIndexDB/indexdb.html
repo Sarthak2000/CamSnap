@@ -22,6 +22,7 @@
 <script>
 
     let db;
+    let mediatableexist=false;
     
     //1.Open / Create Database
 
@@ -31,17 +32,22 @@
     bid.addEventListener("click", openDB);
     function openDB(e) {
         let dbReq = indexedDB.open(dname.value, dver.value); // gets me the db request
-        console.log(dbReq);     // I am getting my db here also ???
+        console.log(dbReq);     // I am getting my db here also but it would be pending.
 
         dbReq.onsuccess=function (e) {
             alert("sucess event!!!");
+            db.onversionchange=function(e){
+                db.close();
+            }
         }
-        
         dbReq.onupgradeneeded=function (e) {
             alert("onupgrade !!!");
             db=e.target.result;
             // Now Create MediaTable
-            let MediaTable=db.createObjectStore("Media",{keyPath:"mid"});
+            if(mediatableexist==false){ //this is done to handle onversionchange bcoz it wont create a new table for already created table bcoz at that time db wd close and all overloaded functions wd run again !!
+                mediatableexist=true;
+                let MediaTable=db.createObjectStore("Media",{keyPath:"mid"});
+            }
         }
         dbReq.onerror=function(e){
             console.log("ERROR!! : ",e.target.message);
