@@ -10,9 +10,17 @@
 </head>
 <body>
     <div class="container">
+        <div class="filters">
+            <img class="filter sepia"><i class="fas fa-image"></i></img>
+            <div class="filter grayscale"><i class="fas fa-image"></i></div>
+            <div class="filter clarendon"><i class="fas fa-image"></i></div>
+            <div class="filter four"><i class="fas fa-image"></i></div>
+        </div>
         <div class="video-container">
             <video autoplay></video>
         </div>
+
+        
         <div class="scaling recording-options">
             <div class="invert">
                 <i class="fas fa-exchange-alt"></i>
@@ -36,7 +44,11 @@
                 </div>
             </div>
         </div>
+        <div class="gallery recording-options">
+                <i class="fas fa-photo-video"></i>
+        </div>
     </div>
+    <script src="mediaUtil.js"></script>
     <script src="initdb.js"></script>
     <script src="script.js"></script>
 </body>

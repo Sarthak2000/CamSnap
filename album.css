@@ -1,0 +1,47 @@
+* {
+    box-sizing: border-box;
+}
+
+.album-items {
+    padding: 3%;
+    min-height: 100vh;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-wrap: wrap;
+    grid-gap: 2%;
+}
+
+.album {
+    height: 45%;
+    width: 18%;
+    margin: 1%;
+    border: 6px solid darkgray;
+}
+
+.media {
+    height: 80%;
+}
+
+.media>img, .media>video{
+    object-fit: contain;
+    height: 100%;
+    width: 100%;
+}
+
+
+.function {
+    height: 20%;
+    display: flex;
+    align-items: center;
+    justify-content: space-evenly;
+}
+
+.fx {
+    height: 100%;
+    width: 40%;
+    color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

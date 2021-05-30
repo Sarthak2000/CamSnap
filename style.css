@@ -115,3 +115,42 @@ video {
     color: white;
     font-size: 30px;
 }
+
+.filters {
+    position: absolute;
+    height: 68%;
+    width: 9%;
+    background: white;
+    top: 7%;
+    left: 6%;
+}
+
+.filter {
+    /* width: calc(100% / 4); */
+    height: calc(100% / 4);
+}
+.filter>.fas{
+    
+color: black;
+    
+/* width: 362%; */
+    
+font-size: 77px;
+}
+
+.gallery {
+    top: 82%;
+    height: 10%;
+    background: white;
+    /* width: 9%; */
+}
+
+.gallery>.fas {
+    color: black;
+}
+.sepia{
+filter: sepia(1);
+}
+.grayscale{
+filter: grayscale(1);
+}
